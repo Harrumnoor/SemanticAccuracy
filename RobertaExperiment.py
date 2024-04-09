@@ -1,23 +1,24 @@
+#Roberta
 import torch
 import json
 from torch.utils.data import Dataset, DataLoader
-from transformers import BertTokenizer, BertForSequenceClassification, AdamW, get_linear_schedule_with_warmup
+from transformers import RobertaTokenizer, RobertaForSequenceClassification, AdamW
 from sklearn.model_selection import train_test_split
 from tqdm import tqdm
 
-# Function to load data from JSON files
+# Function to load data
 def load_data(correct_file_path, incorrect_file_path):
     with open(correct_file_path, 'r') as f:
         correct_data = json.load(f)
         for item in correct_data:
-            item['correctness'] = 1  # Label for correct examples
+            item['correctness'] = 1
 
     with open(incorrect_file_path, 'r') as f:
         incorrect_data = json.load(f)
         for item in incorrect_data:
-            item['correctness'] = 0  # Label for incorrect examples
+            item['correctness'] = 0
 
-    return correct_data + incorrect_data  # Combine and return the data
+    return correct_data + incorrect_data
 
 # Custom dataset class
 class SQLCorrectnessDataset(Dataset):
@@ -48,7 +49,7 @@ class SQLCorrectnessDataset(Dataset):
         }
 
 # Initialize tokenizer
-tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+tokenizer = RobertaTokenizer.from_pretrained('roberta-base')
 
 # Load data
 data = load_data('correct_training_data.json', 'incorrect_dataset_all.json')  # Update paths
@@ -59,17 +60,13 @@ train_data, val_data = train_test_split(data, test_size=0.1, random_state=42)
 # Create datasets and loaders
 train_dataset = SQLCorrectnessDataset(train_data, tokenizer)
 val_dataset = SQLCorrectnessDataset(val_data, tokenizer)
-# Adjust batch size
-train_loader = DataLoader(train_dataset, batch_size=8, shuffle=True)  # Reduced from 16 to 8
-val_loader = DataLoader(val_dataset, batch_size=8)  # Reduced from 16 to 8
-
 #train_loader = DataLoader(train_dataset, batch_size=16, shuffle=True)
 #val_loader = DataLoader(val_dataset, batch_size=16)
-
+train_loader = DataLoader(train_dataset, batch_size=8, shuffle=True)  # Reduced from 16 to 8
+val_loader = DataLoader(val_dataset, batch_size=8)  # Reduced from 16 to 8
 # Load model
-model = BertForSequenceClassification.from_pretrained('bert-base-uncased', num_labels=2)
+model = RobertaForSequenceClassification.from_pretrained('roberta-base', num_labels=2)
 #optimizer = AdamW(model.parameters(), lr=2e-5)
-# Reduce the learning rate
 optimizer = AdamW(model.parameters(), lr=1e-5)  # Reduced from 2e-5 to 1e-5
 
 # Move model to GPU if available
@@ -77,7 +74,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model.to(device)
 
 # Training loop
-num_epochs = 6
+num_epochs = 5
 for epoch in range(num_epochs):
     model.train()
     total_loss = 0
@@ -103,10 +100,7 @@ for batch in tqdm(val_loader, desc="Evaluating"):
     accuracy = (predictions == batch['labels']).cpu().numpy().mean()
     total_eval_accuracy += accuracy
 
-# Save the trained model and tokenizer
-model.save_pretrained('./my_trained_model')
-tokenizer.save_pretrained('./my_trained_model')
-
-print("Model and tokenizer have been saved.")
-
 print(f"Validation Accuracy: {total_eval_accuracy / len(val_loader)}")
+# Save the trained model and tokenizer
+model.save_pretrained('./my_trained_model_roberta')
+tokenizer.save_pretrained('./my_trained_model_roberta')
