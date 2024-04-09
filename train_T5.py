@@ -62,7 +62,7 @@ tokenizer = T5Tokenizer.from_pretrained('t5-small')
 model = T5ForConditionalGeneration.from_pretrained('t5-small')
 
 # Load data and create datasets
-data = load_data('correct_training_data.json', 'incorrect_dataset_all.json')  # Update paths
+data = load_data('correct_training_data.json', 'incorrect_dataset_all.json') 
 train_data, val_data = train_test_split(data, test_size=0.1, random_state=42)
 train_dataset = SQLCorrectnessDataset(train_data, tokenizer)
 val_dataset = SQLCorrectnessDataset(val_data, tokenizer)
@@ -76,7 +76,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model.to(device)
 optimizer = AdamW(model.parameters(), lr=5e-5)
 
-num_epochs = 3  # Adjust epochs according to your dataset size and desired training duration
+num_epochs = 3 
 num_training_steps = num_epochs * len(train_loader)
 lr_scheduler = get_linear_schedule_with_warmup(optimizer, num_warmup_steps=0, num_training_steps=num_training_steps)
 
