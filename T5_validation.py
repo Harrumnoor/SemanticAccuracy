@@ -43,17 +43,15 @@ class T5ValidationDataset(Dataset):
             'labels': target_encoding['input_ids'].flatten()
         }
 
-# Load the tokenizer and model
 tokenizer = T5Tokenizer.from_pretrained('finetuned_T5')
 model = T5ForConditionalGeneration.from_pretrained('finetuned_T5')
 model.eval()  # Set the model to evaluation mode
 
-# Load your validation data
-with open('F1.json', 'r') as file:  # Adjust this to the path of your validation data
+with open('F1.json', 'r') as file: 
     validation_data = json.load(file)
 
 val_dataset = T5ValidationDataset(validation_data, tokenizer)
-val_loader = DataLoader(val_dataset, batch_size=8, shuffle=False)  # Adjust batch size if necessary
+val_loader = DataLoader(val_dataset, batch_size=8, shuffle=False)  
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model.to(device)
