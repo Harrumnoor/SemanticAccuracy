@@ -45,11 +45,9 @@ test_data = load_data_from_json('F1.json')
 test_dataset = convert_examples_to_tf_dataset(test_data, tokenizer)
 test_dataset = test_dataset.batch(32)  # Adjust the batch size if necessary
 
-# Load the fine-tuned model
 model_directory = 'my_trained_model/'
 model = tf.keras.models.load_model(model_directory)
 
-# Run the model to get predictions
 predictions = model.predict(test_dataset)
 
 
