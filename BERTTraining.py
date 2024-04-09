@@ -45,7 +45,6 @@ class SQLCorrectnessDataset(Dataset):
             return_tensors='pt',
         )
         # Encode SQL
-        # Check if 'predicted_parse' is available; otherwise, use 'query'
         sql_text = item.get('predicted_parse', item.get('query', ''))
         sql_encoding = self.tokenizer.encode_plus(
             sql_text,  # Use either 'predicted_parse' or 'query'
@@ -86,7 +85,6 @@ class BertClassifier(nn.Module):
         return logits
 
 
-# Initialize tokenizer and model
 tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
 model = BertClassifier()
 
@@ -127,14 +125,11 @@ for epoch in range(num_epochs):
     print(f"Epoch {epoch+1} | Loss: {total_loss / len(train_loader)}")
 
 
-# Define the directory where you want to save your model
 model_dir = './my_trained_model_v2'
 
-# Check if the directory exists, and if not, create it
 if not os.path.exists(model_dir):
     os.makedirs(model_dir)
 
-# Now it's safe to save your model's state dictionary
 torch.save(model.state_dict(), os.path.join(model_dir, 'model_state_dict.pt'))
 
 # Also, save your tokenizer in the same directory
