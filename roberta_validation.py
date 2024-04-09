@@ -33,8 +33,8 @@ class ValidationDataset(Dataset):
         }
 
 # Load the tokenizer and model for RoBERTa
-tokenizer = RobertaTokenizer.from_pretrained('my_trained_model_roberta')  # Update path
-model = RobertaForSequenceClassification.from_pretrained('my_trained_model_roberta')  # Update path
+tokenizer = RobertaTokenizer.from_pretrained('my_trained_model_roberta') 
+model = RobertaForSequenceClassification.from_pretrained('my_trained_model_roberta')
 model.eval()  # Set the model to evaluation mode
 
 with open('F1.json', 'r') as file:  # Make sure to use the correct file path
