@@ -16,7 +16,6 @@ class T5ValidationDataset(Dataset):
 
     def __getitem__(self, idx):
         item = self.data[idx]
-        # Format the input text as a question about the correctness of the SQL query
         input_text = f"question: {item['question']} SQL: {item['query']} Is this SQL correct?"
         encoding = self.tokenizer(
             input_text,
