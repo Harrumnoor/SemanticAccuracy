@@ -97,8 +97,6 @@ for epoch in range(num_epochs):
     avg_train_loss = total_loss / len(train_loader)
     print(f"Epoch: {epoch + 1}, Loss: {avg_train_loss:.2f}")
 
-    # Validation loop - Implement this if needed
-
 # Save the model and tokenizer
 model.save_pretrained('./fine_tuned_T5')
 tokenizer.save_pretrained('./fine_tuned_T5')
