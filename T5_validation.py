@@ -70,7 +70,7 @@ with torch.no_grad():
         decoded_labels = [tokenizer.decode(ids, skip_special_tokens=True) for ids in labels]
 
         predictions.extend(decoded_preds)
-        true_labels.extend(["correct" if label == 1 else "incorrect" for label in decoded_labels])  # Adjust according to your labels
+        true_labels.extend(["correct" if label == 1 else "incorrect" for label in decoded_labels]) 
 
 # Convert predictions and true labels to binary
 binary_predictions = [1 if pred.lower() == "correct" else 0 for pred in predictions]
