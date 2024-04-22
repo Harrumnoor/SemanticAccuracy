@@ -43,7 +43,7 @@ tokenizer = BertTokenizer.from_pretrained('bert-large-uncased')
 # Load and preprocess the test dataset
 test_data = load_data_from_json('F1.json')
 test_dataset = convert_examples_to_tf_dataset(test_data, tokenizer)
-test_dataset = test_dataset.batch(32)  # Adjust the batch size if necessary
+test_dataset = test_dataset.batch(32)  
 
 model_directory = 'my_trained_model/'
 model = tf.keras.models.load_model(model_directory)
