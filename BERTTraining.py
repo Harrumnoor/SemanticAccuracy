@@ -132,7 +132,6 @@ if not os.path.exists(model_dir):
 
 torch.save(model.state_dict(), os.path.join(model_dir, 'model_state_dict.pt'))
 
-# Also, save your tokenizer in the same directory
 tokenizer.save_pretrained(model_dir)
 
 print("Model state dict and tokenizer have been saved.")
@@ -161,7 +160,6 @@ with torch.no_grad():
         correct_predictions = torch.sum(preds == labels)
         total_eval_accuracy += correct_predictions.item()
 
-# Compute the average loss and accuracy over the validation set
 avg_val_loss = total_eval_loss / len(val_loader)
 avg_val_accuracy = total_eval_accuracy / len(val_loader.dataset)
 
