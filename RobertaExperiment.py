@@ -69,7 +69,6 @@ model = RobertaForSequenceClassification.from_pretrained('roberta-base', num_lab
 #optimizer = AdamW(model.parameters(), lr=2e-5)
 optimizer = AdamW(model.parameters(), lr=1e-5)  # Reduced from 2e-5 to 1e-5
 
-# Move model to GPU if available
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model.to(device)
 
