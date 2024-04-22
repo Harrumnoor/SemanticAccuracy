@@ -85,7 +85,7 @@ model.to(device)
 
 # Training and evaluation
 optimizer = AdamW(model.parameters(), lr=2e-5)
-total_steps = len(train_loader) * 3  # Assuming 3 epochs
+total_steps = len(train_loader) * 3 
 scheduler = get_linear_schedule_with_warmup(optimizer, num_warmup_steps=0, num_training_steps=total_steps)
 
 for epoch in range(3):
